@@ -5,21 +5,54 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const container = document.getElementById('hadith-container');
 
+    // Create and insert search bar
+    const searchBar = createSearchBar();
+    container.insertAdjacentElement('beforebegin', searchBar);
+
+    // Load Hadith data for each book
     books.forEach(book => {
         fetch(`./booksOfHadith/${book}.json`)
             .then(response => response.json())
             .then(data => {
                 // Create and insert book section
-                const section = createBookSection(data);
+                const section = createBookSection(data, book);
                 container.appendChild(section);
             })
             .catch(error => console.error('Error loading Hadith data:', error));
     });
 });
 
-function createBookSection(data) {
+function createSearchBar() {
+    const searchBar = document.createElement('div');
+    searchBar.classList.add('search-bar');
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.id = 'search-input';
+    input.placeholder = 'ابحث عن حديث...';
+
+    const button = document.createElement('button');
+    button.id = 'search-button';
+    button.textContent = 'بحث';
+
+    searchBar.appendChild(input);
+    searchBar.appendChild(button);
+
+    // Add event listeners for search functionality
+    button.addEventListener('click', () => searchHadiths());
+    input.addEventListener('keyup', (event) => {
+        if (event.key === 'Enter') {
+            searchHadiths();
+        }
+    });
+
+    return searchBar;
+}
+
+function createBookSection(data, book) {
     const section = document.createElement('section');
     section.classList.add('section');
+    section.id = book;
     
     // Book Title and Author
     const title = document.createElement('h2');
@@ -65,4 +98,26 @@ function createBookSection(data) {
     });
 
     return section;
+}
+
+function searchHadiths() {
+    const query = document.getElementById('search-input').value.toLowerCase();
+    const sections = document.querySelectorAll('.section');
+
+    sections.forEach(section => {
+        const articles = section.querySelectorAll('article');
+        let hasMatchingHadith = false;
+
+        articles.forEach(article => {
+            const content = article.querySelector('p').textContent.toLowerCase();
+            if (content.includes(query)) {
+                article.style.display = '';
+                hasMatchingHadith = true;
+            } else {
+                article.style.display = 'none';
+            }
+        });
+
+        section.style.display = hasMatchingHadith ? '' : 'none';
+    });
 }
