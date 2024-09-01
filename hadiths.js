@@ -1,123 +1,83 @@
 document.addEventListener("DOMContentLoaded", () => {
     const books = [
-        'abudawud', 'ahmed', 'bukhari', 'darimi', 'ibnmajah', 'malik', 'muslim', 'nasai', 'tirmidhi'
+        { id: 'abudawud', name: 'سنن أبي داود', author: 'الإمام أبي داود' },
+        { id: 'ahmed', name: 'مسند الإمام أحمد بن حنبل', author: 'الإمام أحمد بن حنبل' },
+        { id: 'bukhari', name: 'صحيح البخاري', author: 'الإمام البخاري' },
+        { id: 'darimi', name: 'سنن الدارمي', author: 'الدارمي' },
+        { id: 'ibnmajah', name: 'سنن ابن ماجه', author: 'ابن ماجه' },
+        { id: 'malik', name: 'موطأ مالك', author: 'الإمام مالك' },
+        { id: 'muslim', name: 'صحيح مسلم', author: 'الإمام مسلم' },
+        { id: 'nasai', name: 'سنن النسائي', author: 'النسائي' },
+        { id: 'tirmidhi', name: 'جامع الترمذي', author: 'الإمام الترمذي' }
     ];
 
-    const container = document.getElementById('hadith-container');
-
-    // Create and insert search bar
-    const searchBar = createSearchBar();
-    container.insertAdjacentElement('beforebegin', searchBar);
-
-    // Load Hadith data for each book
     books.forEach(book => {
-        fetch(`./booksOfHadith/${book}.json`)
-            .then(response => response.json())
-            .then(data => {
-                // Create and insert book section
-                const section = createBookSection(data, book);
-                container.appendChild(section);
-            })
-            .catch(error => console.error('Error loading Hadith data:', error));
-    });
-});
+        const button = document.getElementById(`${book.id}-button`);
+        const content = document.getElementById(`${book.id}-content`);
+        const loadingBar = document.getElementById(`${book.id}-loading-bar`);
+        const hadithsContainer = document.getElementById(`${book.id}-hadiths`);
+        const authorInfo = document.getElementById(`${book.id}-author-info`);
+        const sectionTitle = document.getElementById(`${book.id}-section-title`);
 
-function createSearchBar() {
-    const searchBar = document.createElement('div');
-    searchBar.classList.add('search-bar');
+        button.addEventListener('click', () => {
+            if (content.style.display === "none" || !content.style.display) {
+                content.style.display = "block";
+                loadingBar.style.display = "block";
 
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.id = 'search-input';
-    input.placeholder = 'ابحث عن حديث...';
+                fetch(`./booksOfHadith/${book.name}.json`)
+                    .then(response => response.json())
+                    .then(data => {
+                        // Clear existing hadiths if any
+                        hadithsContainer.innerHTML = '';
 
-    const button = document.createElement('button');
-    button.id = 'search-button';
-    button.textContent = 'بحث';
+                        // Process and display the Hadiths
+                        data.chapters.forEach(chapter => {
+                            const chapterSection = document.createElement('section');
+                            chapterSection.classList.add('chapter-section');
 
-    searchBar.appendChild(input);
-    searchBar.appendChild(button);
+                            const chapterTitle = document.createElement('h3');
+                            chapterTitle.textContent = chapter.arabic || chapter.english;
+                            chapterSection.appendChild(chapterTitle);
 
-    // Add event listeners for search functionality
-    button.addEventListener('click', () => searchHadiths());
-    input.addEventListener('keyup', (event) => {
-        if (event.key === 'Enter') {
-            searchHadiths();
-        }
-    });
+                            data.hadiths
+                                .filter(hadith => hadith.chapterId === chapter.id)
+                                .forEach(hadith => {
+                                    const article = document.createElement('article');
 
-    return searchBar;
-}
+                                    const hadithNumber = document.createElement('h4');
+                                    hadithNumber.textContent = `حديث ${hadith.idInBook}`;
+                                    article.appendChild(hadithNumber);
 
-function createBookSection(data, book) {
-    const section = document.createElement('section');
-    section.classList.add('section');
-    section.id = book;
-    
-    // Book Title and Author
-    const title = document.createElement('h2');
-    title.textContent = data.metadata.arabic.title || data.metadata.english.title;
-    section.appendChild(title);
+                                    const hadithText = document.createElement('p');
+                                    hadithText.textContent = hadith.arabic;
+                                    article.appendChild(hadithText);
 
-    const author = document.createElement('h3');
-    author.textContent = `المؤلف: ${data.metadata.arabic.author || data.metadata.english.author}`;
-    section.appendChild(author);
+                                    const status = document.createElement('span');
+                                    status.classList.add('status');
+                                    status.textContent = hadith.english ? 'صحيح' : 'ضعيف'; // Adjust based on the hadith status
+                                    article.appendChild(status);
 
-    // Create sections for chapters
-    data.chapters.forEach(chapter => {
-        const chapterSection = document.createElement('section');
-        chapterSection.classList.add('chapter-section');
+                                    chapterSection.appendChild(article);
+                                });
 
-        const chapterTitle = document.createElement('h3');
-        chapterTitle.textContent = chapter.arabic || chapter.english;
-        chapterSection.appendChild(chapterTitle);
+                            hadithsContainer.appendChild(chapterSection);
+                        });
 
-        // Create articles for each Hadith in the chapter
-        data.hadiths
-            .filter(hadith => hadith.chapterId === chapter.id)
-            .forEach(hadith => {
-                const article = document.createElement('article');
-                
-                const hadithNumber = document.createElement('h4');
-                hadithNumber.textContent = `حديث ${hadith.idInBook}`;
-                article.appendChild(hadithNumber);
-                
-                const hadithText = document.createElement('p');
-                hadithText.textContent = hadith.arabic;
-                article.appendChild(hadithText);
-
-                const status = document.createElement('span');
-                status.classList.add('status');
-                status.textContent = hadith.english ? 'صحيح' : 'ضعيف'; // Adjust based on the hadith status
-                article.appendChild(status);
-
-                chapterSection.appendChild(article);
-            });
-        
-        section.appendChild(chapterSection);
-    });
-
-    return section;
-}
-
-function searchHadiths() {
-    const query = document.getElementById('search-input').value.toLowerCase();
-    const sections = document.querySelectorAll('.section');
-
-    sections.forEach(section => {
-        const articles = section.querySelectorAll('article');
-        let hasMatchingHadith = false;
-
-        articles.forEach(article => {
-            const content = article.querySelector('p').textContent.toLowerCase();
-            if (content.includes(query)) {
-                article.style.display = '';
-                hasMatchingHadith = true;
+                        loadingBar.style.display = "none";
+                    })
+                    .catch(error => {
+                        console.error('Error loading Hadith data:', error);
+                        loadingBar.textContent = 'Error loading data. Please try again later.';
+                    });
             } else {
-                article.style.display = 'none';
+                content.style.display = "none";
             }
         });
 
-        section.style.display = hasMatchingHadith ? '' : 'none';
+        // Add author information
+        authorInfo.textContent = `المؤلف: ${book.author}`;
+
+        // Initialize the section as hidden
+        content.style.display = "none";
     });
-}
+});
