@@ -1,8 +1,8 @@
 /* Additional or overriding styles for hadiths.html */
 .section {
-    background: #e0f2f1;
+    background: #e0f2f1; 
     border-right: 6px solid #00796b;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     padding: 10px;
 }
 
@@ -10,16 +10,9 @@
     color: #004d40;
 }
 
-.section .chapter-section {
-    margin-top: 10px;
-}
-
-.section article {
-    margin-bottom: 20px;
-    padding: 10px;
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.section h3 {
+    color: #004d40;
+    margin-bottom: 10px;
 }
 
 .section .status {
@@ -32,28 +25,32 @@
     margin-top: 5px;
 }
 
-/* Button styling to match the website theme */
 .toggle-button {
+    background-color: #004d40;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-bottom: 10px;
     display: block;
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    font-size: 1em;
-    color: #ffffff;
-    background-color: #00796b;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
     text-align: center;
 }
 
 .toggle-button:hover {
-    background-color: #004d40;
+    background-color: #00332b;
 }
 
-/* Author info styling */
-.author-info {
-    font-size: 1em;
-    color: #004d40;
-    margin-top: 10px;
+.content {
+    display: none;
+}
+
+.loading-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    color: #00796b;
 }
