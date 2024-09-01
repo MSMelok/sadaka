@@ -1,56 +1,27 @@
-/* Additional or overriding styles for hadiths.html */
-.section {
-    background: #e0f2f1; 
-    border-right: 6px solid #00796b;
-    margin-bottom: 15px;
-    padding: 10px;
-}
+        /* Additional or overriding styles for hadiths.html */
+        .section {
+            background: #e0f2f1; /* Match صدقة جارية section color */
+            border-right: 6px solid #00796b;
+        }
 
-.section h2 {
-    color: #004d40;
-}
+        .section h2 {
+            color: #004d40;
+        }
 
-.section h3 {
-    color: #004d40;
-    margin-bottom: 10px;
-}
+        .section article {
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
 
-.section .status {
-    display: inline-block;
-    padding: 5px 10px;
-    background-color: #00796b;
-    color: white;
-    border-radius: 5px;
-    font-size: 0.9em;
-    margin-top: 5px;
-}
-
-.toggle-button {
-    background-color: #004d40;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-bottom: 10px;
-    display: block;
-    width: 100%;
-    text-align: center;
-}
-
-.toggle-button:hover {
-    background-color: #00332b;
-}
-
-.content {
-    display: none;
-}
-
-.loading-bar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 16px;
-    color: #00796b;
-}
+        .section .status {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #00796b;
+            color: white;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
