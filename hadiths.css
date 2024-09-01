@@ -1,27 +1,59 @@
-        /* Additional or overriding styles for hadiths.html */
-        .section {
-            background: #e0f2f1; /* Match صدقة جارية section color */
-            border-right: 6px solid #00796b;
-        }
+/* Additional or overriding styles for hadiths.html */
+.section {
+    background: #e0f2f1;
+    border-right: 6px solid #00796b;
+    margin-bottom: 20px;
+    padding: 10px;
+}
 
-        .section h2 {
-            color: #004d40;
-        }
+.section h2 {
+    color: #004d40;
+}
 
-        .section article {
-            margin-bottom: 20px;
-            padding: 10px;
-            background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
+.section .chapter-section {
+    margin-top: 10px;
+}
 
-        .section .status {
-            display: inline-block;
-            padding: 5px 10px;
-            background-color: #00796b;
-            color: white;
-            border-radius: 5px;
-            font-size: 0.9em;
-            margin-top: 5px;
-        }
+.section article {
+    margin-bottom: 20px;
+    padding: 10px;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section .status {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #00796b;
+    color: white;
+    border-radius: 5px;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+/* Button styling to match the website theme */
+.toggle-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 1em;
+    color: #ffffff;
+    background-color: #00796b;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.toggle-button:hover {
+    background-color: #004d40;
+}
+
+/* Author info styling */
+.author-info {
+    font-size: 1em;
+    color: #004d40;
+    margin-top: 10px;
+}
