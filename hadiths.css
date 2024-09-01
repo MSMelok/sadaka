@@ -1,0 +1,27 @@
+        /* Additional or overriding styles for hadiths.html */
+        .section {
+            background: #e0f2f1; /* Match صدقة جارية section color */
+            border-right: 6px solid #00796b;
+        }
+
+        .section h2 {
+            color: #004d40;
+        }
+
+        .section article {
+            margin-bottom: 20px;
+            padding: 10px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .section .status {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #00796b;
+            color: white;
+            border-radius: 5px;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
