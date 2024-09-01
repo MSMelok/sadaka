@@ -7,21 +7,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     books.forEach(book => {
         fetch(`./booksOfHadith/${book}.json`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.text(); // Get response as text
-            })
-            .then(text => {
-                console.log(`Fetched data for ${book}:`, text); // Log the raw text
-                try {
-                    const data = JSON.parse(text); // Parse text as JSON
-                    const section = createBookSection(data);
-                    container.appendChild(section);
-                } catch (error) {
-                    console.error('Error parsing JSON:', error);
-                }
+            .then(response => response.json())
+            .then(data => {
+                // Create and insert book section
+                const section = createBookSection(data);
+                container.appendChild(section);
             })
             .catch(error => console.error('Error loading Hadith data:', error));
     });
