@@ -10,26 +10,123 @@
     <script src="./hadiths.js" defer></script>
 </head>
 <body>
-    <header>
+    <header id="header">
         <div class="container">
-            <h1>الأحاديث النبوية</h1>
-            <p>استعرض الأحاديث النبوية من كتب الأحاديث الصحيحة</p>
+            <h1 id="header-title">الأحاديث النبوية</h1>
+            <p id="header-description">استعرض الأحاديث النبوية من كتب الأحاديث الصحيحة</p>
         </div>
     </header>
 
-    <nav>
-        <a href="./index.html#container">الصفحة الرئيسية</a>
-        <a href="./hadiths.html">الأحاديث النبوية</a>
-        <a href="./seerah.html">قصص السيرة النبوية</a>
-        <a href="./companions.html">قصص الصحابة</a>
+    <nav id="nav">
+        <a href="index.html#intro" id="home-link">الصفحة الرئيسية</a>
+        <a href="hadiths.html" id="hadiths-link">الأحاديث النبوية</a>
+        <a href="seerah.html" id="seerah-link">قصص السيرة النبوية</a>
+        <a href="companions.html" id="companions-link">قصص الصحابة</a>
     </nav>
 
-    <div class="container" id="hadith-container">
-        <!-- Hadith sections will be dynamically inserted here -->
+    <div class="container" id="hadiths-container">
+        <!-- Collapsible section for سنن أبي داود -->
+        <section id="abudawud-section" class="section">
+            <button id="abudawud-button" class="toggle-button">عرض المحتوى</button>
+            <div id="abudawud-content" class="content">
+                <div id="abudawud-loading-bar" class="loading-bar" style="display:none;">Loading...</div>
+                <div id="abudawud-hadiths" class="hadiths-container"></div>
+            </div>
+            <div id="abudawud-section-title" class="section-title">سنن أبي داود</div>
+            <div id="abudawud-author-info" class="author-info"></div>
+        </section>
+
+        <!-- Collapsible section for مسند الإمام أحمد بن حنبل -->
+        <section id="ahmed-section" class="section">
+            <button id="ahmed-button" class="toggle-button">عرض المحتوى</button>
+            <div id="ahmed-content" class="content">
+                <div id="ahmed-loading-bar" class="loading-bar" style="display:none;">Loading...</div>
+                <div id="ahmed-hadiths" class="hadiths-container"></div>
+            </div>
+            <div id="ahmed-section-title" class="section-title">مسند الإمام أحمد بن حنبل</div>
+            <div id="ahmed-author-info" class="author-info"></div>
+        </section>
+
+        <!-- Collapsible section for صحيح البخاري -->
+        <section id="bukhari-section" class="section">
+            <button id="bukhari-button" class="toggle-button">عرض المحتوى</button>
+            <div id="bukhari-content" class="content">
+                <div id="bukhari-loading-bar" class="loading-bar" style="display:none;">Loading...</div>
+                <div id="bukhari-hadiths" class="hadiths-container"></div>
+            </div>
+            <div id="bukhari-section-title" class="section-title">صحيح البخاري</div>
+            <div id="bukhari-author-info" class="author-info"></div>
+        </section>
+
+        <!-- Collapsible section for سنن الدارمي -->
+        <section id="darimi-section" class="section">
+            <button id="darimi-button" class="toggle-button">عرض المحتوى</button>
+            <div id="darimi-content" class="content">
+                <div id="darimi-loading-bar" class="loading-bar" style="display:none;">Loading...</div>
+                <div id="darimi-hadiths" class="hadiths-container"></div>
+            </div>
+            <div id="darimi-section-title" class="section-title">سنن الدارمي</div>
+            <div id="darimi-author-info" class="author-info"></div>
+        </section>
+
+        <!-- Collapsible section for سنن ابن ماجه -->
+        <section id="ibnmajah-section" class="section">
+            <button id="ibnmajah-button" class="toggle-button">عرض المحتوى</button>
+            <div id="ibnmajah-content" class="content">
+                <div id="ibnmajah-loading-bar" class="loading-bar" style="display:none;">Loading...</div>
+                <div id="ibnmajah-hadiths" class="hadiths-container"></div>
+            </div>
+            <div id="ibnmajah-section-title" class="section-title">سنن ابن ماجه</div>
+            <div id="ibnmajah-author-info" class="author-info"></div>
+        </section>
+
+        <!-- Collapsible section for موطأ مالك -->
+        <section id="malik-section" class="section">
+            <button id="malik-button" class="toggle-button">عرض المحتوى</button>
+            <div id="malik-content" class="content">
+                <div id="malik-loading-bar" class="loading-bar" style="display:none;">Loading...</div>
+                <div id="malik-hadiths" class="hadiths-container"></div>
+            </div>
+            <div id="malik-section-title" class="section-title">موطأ مالك</div>
+            <div id="malik-author-info" class="author-info"></div>
+        </section>
+
+        <!-- Collapsible section for صحيح مسلم -->
+        <section id="muslim-section" class="section">
+            <button id="muslim-button" class="toggle-button">عرض المحتوى</button>
+            <div id="muslim-content" class="content">
+                <div id="muslim-loading-bar" class="loading-bar" style="display:none;">Loading...</div>
+                <div id="muslim-hadiths" class="hadiths-container"></div>
+            </div>
+            <div id="muslim-section-title" class="section-title">صحيح مسلم</div>
+            <div id="muslim-author-info" class="author-info"></div>
+        </section>
+
+        <!-- Collapsible section for سنن النسائي -->
+        <section id="nasai-section" class="section">
+            <button id="nasai-button" class="toggle-button">عرض المحتوى</button>
+            <div id="nasai-content" class="content">
+                <div id="nasai-loading-bar" class="loading-bar" style="display:none;">Loading...</div>
+                <div id="nasai-hadiths" class="hadiths-container"></div>
+            </div>
+            <div id="nasai-section-title" class="section-title">سنن النسائي</div>
+            <div id="nasai-author-info" class="author-info"></div>
+        </section>
+
+        <!-- Collapsible section for جامع الترمذي -->
+        <section id="tirmidhi-section" class="section">
+            <button id="tirmidhi-button" class="toggle-button">عرض المحتوى</button>
+            <div id="tirmidhi-content" class="content">
+                <div id="tirmidhi-loading-bar" class="loading-bar" style="display:none;">Loading...</div>
+                <div id="tirmidhi-hadiths" class="hadiths-container"></div>
+            </div>
+            <div id="tirmidhi-section-title" class="section-title">جامع الترمذي</div>
+            <div id="tirmidhi-author-info" class="author-info"></div>
+        </section>
     </div>
 
-    <footer>
-        <p>&copy; 2024 قبس من السيرة. جميع الحقوق محفوظة.</p>
+    <footer id="footer">
+        <p id="footer-text">&copy; 2024 قبس من السيرة. جميع الحقوق محفوظة.</p>
     </footer>
 </body>
 </html>
