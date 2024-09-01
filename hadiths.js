@@ -1,83 +1,63 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const books = [
-        { id: 'abudawud', name: 'سنن أبي داود', author: 'الإمام أبي داود' },
-        { id: 'ahmed', name: 'مسند الإمام أحمد بن حنبل', author: 'الإمام أحمد بن حنبل' },
-        { id: 'bukhari', name: 'صحيح البخاري', author: 'الإمام البخاري' },
-        { id: 'darimi', name: 'سنن الدارمي', author: 'الدارمي' },
-        { id: 'ibnmajah', name: 'سنن ابن ماجه', author: 'ابن ماجه' },
-        { id: 'malik', name: 'موطأ مالك', author: 'الإمام مالك' },
-        { id: 'muslim', name: 'صحيح مسلم', author: 'الإمام مسلم' },
-        { id: 'nasai', name: 'سنن النسائي', author: 'النسائي' },
-        { id: 'tirmidhi', name: 'جامع الترمذي', author: 'الإمام الترمذي' }
-    ];
+    const books = {
+        'abudawud': 'سنن أبي داود',
+        'ahmed': 'مسند الإمام أحمد بن حنبل',
+        'bukhari': 'صحيح البخاري',
+        'darimi': 'سنن الدارمي',
+        'ibnmajah': 'سنن ابن ماجه',
+        'malik': 'موطأ مالك',
+        'muslim': 'صحيح مسلم',
+        'nasai': 'سنن النسائي',
+        'tirmidhi': 'جامع الترمذي'
+    };
 
-    books.forEach(book => {
-        const button = document.getElementById(`${book.id}-button`);
-        const content = document.getElementById(`${book.id}-content`);
-        const loadingBar = document.getElementById(`${book.id}-loading-bar`);
-        const hadithsContainer = document.getElementById(`${book.id}-hadiths`);
-        const authorInfo = document.getElementById(`${book.id}-author-info`);
-        const sectionTitle = document.getElementById(`${book.id}-section-title`);
+    Object.keys(books).forEach(book => {
+        const button = document.getElementById(`${book}-button`);
+        const content = document.getElementById(`${book}-content`);
+        const loadingBar = document.getElementById(`${book}-loading-bar`);
+        const hadithContainer = document.getElementById(`${book}-hadiths`);
 
         button.addEventListener('click', () => {
-            if (content.style.display === "none" || !content.style.display) {
-                content.style.display = "block";
-                loadingBar.style.display = "block";
-
-                fetch(`./booksOfHadith/${book.name}.json`)
+            if (content.style.display === 'none' || content.style.display === '') {
+                content.style.display = 'block';
+                loadingBar.style.display = 'block';
+                fetch(`./booksOfHadith/${book}.json`)
                     .then(response => response.json())
                     .then(data => {
-                        // Clear existing hadiths if any
-                        hadithsContainer.innerHTML = '';
-
-                        // Process and display the Hadiths
-                        data.chapters.forEach(chapter => {
-                            const chapterSection = document.createElement('section');
-                            chapterSection.classList.add('chapter-section');
-
-                            const chapterTitle = document.createElement('h3');
-                            chapterTitle.textContent = chapter.arabic || chapter.english;
-                            chapterSection.appendChild(chapterTitle);
-
-                            data.hadiths
-                                .filter(hadith => hadith.chapterId === chapter.id)
-                                .forEach(hadith => {
-                                    const article = document.createElement('article');
-
-                                    const hadithNumber = document.createElement('h4');
-                                    hadithNumber.textContent = `حديث ${hadith.idInBook}`;
-                                    article.appendChild(hadithNumber);
-
-                                    const hadithText = document.createElement('p');
-                                    hadithText.textContent = hadith.arabic;
-                                    article.appendChild(hadithText);
-
-                                    const status = document.createElement('span');
-                                    status.classList.add('status');
-                                    status.textContent = hadith.english ? 'صحيح' : 'ضعيف'; // Adjust based on the hadith status
-                                    article.appendChild(status);
-
-                                    chapterSection.appendChild(article);
-                                });
-
-                            hadithsContainer.appendChild(chapterSection);
-                        });
-
-                        loadingBar.style.display = "none";
+                        loadingBar.style.display = 'none';
+                        hadithContainer.innerHTML = createBookSection(data);
                     })
                     .catch(error => {
+                        loadingBar.style.display = 'none';
                         console.error('Error loading Hadith data:', error);
-                        loadingBar.textContent = 'Error loading data. Please try again later.';
                     });
             } else {
-                content.style.display = "none";
+                content.style.display = 'none';
             }
         });
-
-        // Add author information
-        authorInfo.textContent = `المؤلف: ${book.author}`;
-
-        // Initialize the section as hidden
-        content.style.display = "none";
     });
 });
+
+function createBookSection(data) {
+    let html = `<h2>${data.metadata.arabic.title || data.metadata.english.title}</h2>`;
+    html += `<h3>المؤلف: ${data.metadata.arabic.author || data.metadata.english.author}</h3>`;
+    
+    data.chapters.forEach(chapter => {
+        html += `<section class="chapter-section">
+                    <h3>${chapter.arabic || chapter.english}</h3>`;
+        
+        data.hadiths
+            .filter(hadith => hadith.chapterId === chapter.id)
+            .forEach(hadith => {
+                html += `<article>
+                            <h4>حديث ${hadith.idInBook}</h4>
+                            <p>${hadith.arabic}</p>
+                            <span class="status">${hadith.english ? 'صحيح' : 'ضعيف'}</span>
+                        </article>`;
+            });
+        
+        html += `</section>`;
+    });
+
+    return html;
+}
