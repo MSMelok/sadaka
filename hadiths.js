@@ -1,63 +1,68 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const books = {
-        'abudawud': 'سنن أبي داود',
-        'ahmed': 'مسند الإمام أحمد بن حنبل',
-        'bukhari': 'صحيح البخاري',
-        'darimi': 'سنن الدارمي',
-        'ibnmajah': 'سنن ابن ماجه',
-        'malik': 'موطأ مالك',
-        'muslim': 'صحيح مسلم',
-        'nasai': 'سنن النسائي',
-        'tirmidhi': 'جامع الترمذي'
-    };
+    const books = [
+        'abudawud', 'ahmed', 'bukhari', 'darimi', 'ibnmajah', 'malik', 'muslim', 'nasai', 'tirmidhi'
+    ];
 
-    Object.keys(books).forEach(book => {
-        const button = document.getElementById(`${book}-button`);
-        const content = document.getElementById(`${book}-content`);
-        const loadingBar = document.getElementById(`${book}-loading-bar`);
-        const hadithContainer = document.getElementById(`${book}-hadiths`);
+    const container = document.getElementById('hadith-container');
 
-        button.addEventListener('click', () => {
-            if (content.style.display === 'none' || content.style.display === '') {
-                content.style.display = 'block';
-                loadingBar.style.display = 'block';
-                fetch(`./booksOfHadith/${book}.json`)
-                    .then(response => response.json())
-                    .then(data => {
-                        loadingBar.style.display = 'none';
-                        hadithContainer.innerHTML = createBookSection(data);
-                    })
-                    .catch(error => {
-                        loadingBar.style.display = 'none';
-                        console.error('Error loading Hadith data:', error);
-                    });
-            } else {
-                content.style.display = 'none';
-            }
-        });
+    books.forEach(book => {
+        fetch(`./booksOfHadith/${book}.json`)
+            .then(response => response.json())
+            .then(data => {
+                // Create and insert book section
+                const section = createBookSection(data);
+                container.appendChild(section);
+            })
+            .catch(error => console.error('Error loading Hadith data:', error));
     });
 });
 
 function createBookSection(data) {
-    let html = `<h2>${data.metadata.arabic.title || data.metadata.english.title}</h2>`;
-    html += `<h3>المؤلف: ${data.metadata.arabic.author || data.metadata.english.author}</h3>`;
+    const section = document.createElement('section');
+    section.classList.add('section');
     
+    // Book Title and Author
+    const title = document.createElement('h2');
+    title.textContent = data.metadata.arabic.title || data.metadata.english.title;
+    section.appendChild(title);
+
+    const author = document.createElement('h3');
+    author.textContent = `المؤلف: ${data.metadata.arabic.author || data.metadata.english.author}`;
+    section.appendChild(author);
+
+    // Create sections for chapters
     data.chapters.forEach(chapter => {
-        html += `<section class="chapter-section">
-                    <h3>${chapter.arabic || chapter.english}</h3>`;
-        
+        const chapterSection = document.createElement('section');
+        chapterSection.classList.add('chapter-section');
+
+        const chapterTitle = document.createElement('h3');
+        chapterTitle.textContent = chapter.arabic || chapter.english;
+        chapterSection.appendChild(chapterTitle);
+
+        // Create articles for each Hadith in the chapter
         data.hadiths
             .filter(hadith => hadith.chapterId === chapter.id)
             .forEach(hadith => {
-                html += `<article>
-                            <h4>حديث ${hadith.idInBook}</h4>
-                            <p>${hadith.arabic}</p>
-                            <span class="status">${hadith.english ? 'صحيح' : 'ضعيف'}</span>
-                        </article>`;
+                const article = document.createElement('article');
+                
+                const hadithNumber = document.createElement('h4');
+                hadithNumber.textContent = `حديث ${hadith.idInBook}`;
+                article.appendChild(hadithNumber);
+                
+                const hadithText = document.createElement('p');
+                hadithText.textContent = hadith.arabic;
+                article.appendChild(hadithText);
+
+                const status = document.createElement('span');
+                status.classList.add('status');
+                status.textContent = hadith.english ? 'صحيح' : 'ضعيف'; // Adjust based on the hadith status
+                article.appendChild(status);
+
+                chapterSection.appendChild(article);
             });
         
-        html += `</section>`;
+        section.appendChild(chapterSection);
     });
 
-    return html;
+    return section;
 }
