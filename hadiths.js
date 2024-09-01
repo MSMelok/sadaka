@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return response.text(); // Get response as text
             })
             .then(text => {
+                console.log(`Fetched data for ${book}:`, text); // Log the raw text
                 try {
                     const data = JSON.parse(text); // Parse text as JSON
                     const section = createBookSection(data);
